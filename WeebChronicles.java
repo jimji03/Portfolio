@@ -1,0 +1,64 @@
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.io.*;
+
+public class WeebChronicles extends JFrame implements ActionListener {
+	Timer myTimer;
+	int status;
+	int startScreen;
+	int cutS;
+
+	startScreen start;
+	cutScene cScene;
+
+	JPanel cards;
+	CardLayout cLayout = new CardLayout();
+
+	public WeebChronicles() {
+		super("The Weeb Chronicles");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(1200,650);
+		myTimer = new Timer(15, this);	 // trigger every 10 ms
+		setResizable(false);
+		start = new startScreen(this);
+		cScene = new cutScene(this);
+		cards = new JPanel(cLayout);
+
+		cards.add(start, "start");
+		cards.add(cScene, "cutScene");
+
+		add(cards);
+
+		startScreen = -1;
+		cutS = 2;
+		status = startScreen;
+
+		setVisible(true);
+	}
+	public void start(){
+		myTimer.start();
+	}
+	public void actionPerformed(ActionEvent evt) {
+		//Following code moves the player to the next stage of the game
+		if(start.getLoaded()){
+			cLayout.show(cards,"cutScene");
+			status = cutS;
+		}
+
+		//Following code draws the elements of each stage
+		if(status == startScreen){
+			start.requestFocus();
+			start.repaint();
+		}
+		if(status == cutS){
+			cScene.requestFocus();
+			cScene.repaint();
+		}
+	}
+
+	public static void main(String[] arguments) throws IOException, FontFormatException {
+		WeebChronicles frame = new WeebChronicles(); //starting the entire game
+    }
+}
